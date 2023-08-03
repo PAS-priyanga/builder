@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Builder
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Create your views here.
 def home(request):
   # Include an .html file extension - unlike when rendering EJS templates
@@ -29,3 +29,11 @@ class BuilderCreate(CreateView):
   fields =  ['name', 'region', 'house_type', 'rating','budget_category', 'appliances_included']
   # ['Name', 'Region', 'House_Type', 'Rating','Budget_Category', 'Appliances_Included']
  
+class BuilderUpdate(UpdateView):
+  model = Builder
+  # Let's disallow the renaming of a cat by excluding the name field!
+  fields = ['appliances_included', 'rating']
+
+class BuilderDelete(DeleteView):
+  model = Builder
+  success_url = '/builders'

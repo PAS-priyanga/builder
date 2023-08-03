@@ -18,7 +18,10 @@
         <p>appliances_included: No</p>
       {% endif %}
     </div>
-  
+    <div class="card-action">
+      <a href="{% url 'builders_update' builder.id %}">Edit</a>
+      <a href="{% url 'builders_delete' builder.id %}">Delete</a>
+    </div>
   </div>
 
 
