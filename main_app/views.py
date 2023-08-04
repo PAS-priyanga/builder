@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Builder
+from .forms import PropertyDetailsForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect
 # Create your views here.
 def home(request):
   # Include an .html file extension - unlike when rendering EJS templates
@@ -22,7 +24,8 @@ def builders_index(request):
 
 def builders_detail(request, builder_id):
   builder = Builder.objects.get(id=builder_id)
-  return render(request, 'builders/detail.html', { 'builder': builder })
+  propertydetails_form = PropertyDetailsForm()
+  return render(request, 'builders/detail.html', { 'builder': builder ,"propertydetails_form" : propertydetails_form})
 
 class BuilderCreate(CreateView):
   model = Builder
@@ -37,3 +40,14 @@ class BuilderUpdate(UpdateView):
 class BuilderDelete(DeleteView):
   model = Builder
   success_url = '/builders'
+
+def add_propertydetails(request, builder_id):
+  form = PropertyDetailsForm(request.POST)
+  # validate the form
+  if form.is_valid():
+    # don't save the form to the db until it
+    # has the cat_id assigned
+    new_propertydetail = form.save(commit=False)
+    new_propertydetail.builder_id = builder_id
+    new_propertydetail.save()
+  return redirect('detail', builder_id=builder_id)
