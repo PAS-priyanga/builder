@@ -7,6 +7,17 @@ LAST_PROPERTY_SIZE= (
     ( 1, 3000 ),
     (2, 2000)
 )
+class Contractor (models.Model) :
+    name = models.CharField(max_length=50)
+    category = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('contractors_detail', kwargs={'pk': self.id})
+    
+    
 
 # Create your models here.
 class Builder(models.Model):
@@ -16,6 +27,7 @@ class Builder(models.Model):
     budget_category=models.CharField(max_length=100)
     name=models.CharField(max_length=100)
     appliances_included=models.BooleanField()
+    contractors = models.ManyToManyField(Contractor)
 
     def __str__(self):
         return ( f'{self.id}| {self.name}')
@@ -36,4 +48,4 @@ class PropertyDetails(models.Model):
     # Nice method for obtaining the friendly value of a Field.choice
       return f"{self.get_last_property_size_display()} sq.ft built in {self.last_built_year} at {self.last_location}  "
     
-    
+
