@@ -7,6 +7,12 @@ LAST_PROPERTY_SIZE= (
     ( 1, 3000 ),
     (2, 2000)
 )
+
+APPLICANCES_INCLUDED= (
+    ( "A", "Yes" ),
+    ( "B", "No" ),
+)
+
 class Contractor (models.Model) :
     name = models.CharField(max_length=50)
     category = models.CharField(max_length=20)
@@ -26,7 +32,8 @@ class Builder(models.Model):
     rating=models.IntegerField()
     budget_category=models.CharField(max_length=100)
     name=models.CharField(max_length=100)
-    appliances_included=models.BooleanField()
+    appliances_included=models.CharField(max_length=100,choices=APPLICANCES_INCLUDED,
+    default=APPLICANCES_INCLUDED[0][0])
     contractors = models.ManyToManyField(Contractor)
 
     def __str__(self):
